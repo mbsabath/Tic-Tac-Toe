@@ -16,4 +16,4 @@ Board.py contains the implementation code for the game board itself, as well as 
 calculating what defines the win condition.
 
 The code will only be functional vs the computer for a 3x3 tic tac toe game.
-However, for multiplier play, any size board is available. The ultimate goal is to fully generalize the
+However, for multiplier play, any size board is available. The ultimate goal is to fully generalize the game play algorithm to game boards of dimensions higher than 3.
