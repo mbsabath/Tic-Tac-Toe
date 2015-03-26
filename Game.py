@@ -131,7 +131,7 @@ def main():
                 break
             else:
                 again = input('Please input yes or no  ').lower()
-        if again == 'yyes':
+        if again in 'nno':
             break
 
 
