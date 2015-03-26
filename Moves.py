@@ -128,93 +128,84 @@ def winning_move(board, side):
     return -1
 
 
-def choose_move(board, side):
-    """Determine the best move for the computer to take in a n = 3 game"""
-    if board.empty:
-        return random.choice([1, 3, 7, 9])
+def best_response(board, side):
+    """determine the best response for a given side to a board using backward induction"""
     can_win = winning_move(board, side)
     if can_win != -1:
         return can_win
+    if len(board.free) == 1:
+        return board.free[0] + 1
     if side == 'X':
         can_lose = winning_move(board, 'O')
         if can_lose != -1:
             return can_lose
-        if 4 in board.free: # give the middle priority
-            return 5
-        good_moves = []
-        ok_moves = []
-        for free in board.free:
-            test = good_move(board, 'X', free + 1)
-            if test == 1:
-                good_moves.append(free + 1)
-            elif test == 0:
-                ok_moves.append(free + 1)
-        if len(good_moves) != 0:
-            return random.choice(good_moves)
-        elif len(ok_moves) != 0:
-            return random.choice(ok_moves)
         else:
-            moves = [x + 1 for x in board.free]
-            return random.choice(moves)
-
+            move_results = [[outcome(board, 'X', i+1), i + 1] \
+                for i in board.free]
+            best_move = max(move_results)
+            return best_move[1]
     if side == 'O':
         can_lose = winning_move(board, 'X')
         if can_lose != -1:
             return can_lose
-        if 4 in board.free:  # Give the middle priority
-            return 5
-        good_moves = []
-        ok_moves = []
-        for free in board.free:
-            test = good_move(board, 'O', free + 1)
-            if test == 1:
-                good_moves.append(free + 1)
-            elif test == 0:
-                ok_moves.append(free + 1)
-        if len(good_moves) != 0:
-            return random.choice(good_moves)
-        elif len(ok_moves) != 0:
-            return random.choice(ok_moves)
         else:
-            moves = [x + 1 for x in board.free]
-            return random.choice(moves)
+            move_results = [[outcome(board, 'O', i+1), i + 1] \
+                for i in board.free]
+            best_move = max(move_results)
+            return best_move[1]
 
-def good_move(board, side, move):
+
+def outcome(board, side, move):
     """
-    Tests a potential move to determine if it generates a desirable outcome
-    :param board: the board being tested
-    :param side: the point of view the function is looking from
-    :param move: the move being tested
-    :return: 1 for good, 0 for neutral, -1 for bad
+    Determines the quality  of the ultimate outcome of a move for a given side
+    :param board: game board
+    :param side: X or O
+    :param move: move to be evaluated
+    :return: 1, 0 or -1
     """
-    test_board = Board(3)
-    for x in board.X:
-        input_x(test_board, x + 1)
-    for o in board.O:
-        input_o(test_board, o + 1)
+
+    if len(board.free) == 0:
+        if not x_win(board, Win_List_3) and not o_win(board, Win_List_3):
+            # print('Returned!')
+            return 0
     if side == 'X':
+        if x_win(board, Win_List_3):
+            # print('Returned!')
+            return 1
+        elif o_win(board, Win_List_3):
+            # print('Returned!')
+            return -1
+        test_board = Board(3)
+        for x in board.X:
+            input_x(test_board, x + 1)
+        for o in board.O:
+            input_o(test_board, o + 1)
         input_x(test_board, move)
-        if winning_move(test_board, 'X') != -1:
+        if len(test_board.free) > 0:
+            reply = best_response(test_board, 'O')
+            result = -1 * outcome(test_board, 'O', reply)
+            return result
+        else:
+            return 0
+    if side == 'O':
+        if x_win(board, Win_List_3):
+            # print('Returned!')
+            return -1
+        elif o_win(board, Win_List_3):
+            # print('Returned!')
             return 1
-        if len(test_board.free) != 0:
-            # print('WE MUST GO DEEPER')
-            response = choose_move(test_board, 'O')
-            input_o(test_board, response)
-            if winning_move(test_board, 'O') != -1:
-                return -1
-        return 0
-
-    elif side == 'O':
+        test_board = Board(3)
+        for x in board.X:
+            input_x(test_board, x + 1)
+        for o in board.O:
+            input_o(test_board, o + 1)
         input_o(test_board, move)
-        if winning_move(test_board, 'O') != -1:
-            return 1
-        if len(test_board.free) != 0:
-            # print('WE MUST GO DEEPER')
-            response = choose_move(test_board, 'X')
-            input_x(test_board, response)
-            if winning_move(test_board, 'X') != -1:
-                return -1
-        return 0
+        if len(test_board.free) > 0:
+            reply = best_response(test_board, 'X')
+            result = -1 * outcome(test_board, 'X', reply)
+            return result
+        else:
+            return 0
 
 
 
