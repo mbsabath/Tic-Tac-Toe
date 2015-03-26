@@ -1,5 +1,6 @@
 # Tic-Tac-Toe
-A command line implementation of tic-tac-toe
+A command line implementation of tic-tac-toe.
+
 This is a project attempting to create a command line interactive game of tic-tac-toe.
 It is an exercise in a combination of applied game theory and computer science. The division of
 internal information is as follows:
