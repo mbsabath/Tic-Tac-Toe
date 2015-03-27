@@ -2,7 +2,7 @@ __author__ = 'Ben'
 
 from Board import *
 import random
-Win_List_3 = gen_win_list(3)
+WIN_LIST_3 = gen_win_list(3)
 
 
 def display_moves(board):
@@ -101,7 +101,7 @@ def winning_move(board, side):
     :return: int
     """
     if side == 'X':
-        for row in Win_List_3:
+        for row in WIN_LIST_3:
             x_test = 0
             free_test = []
             for num in row:
@@ -114,7 +114,7 @@ def winning_move(board, side):
                 return free_test[0] + 1
         return -1
     elif side == 'O':
-        for row in Win_List_3:
+        for row in WIN_LIST_3:
             o_test = 0
             free_test = []
             for num in row:
@@ -165,14 +165,14 @@ def outcome(board, side, move):
     """
 
     if len(board.free) == 0:
-        if not x_win(board, Win_List_3) and not o_win(board, Win_List_3):
+        if not x_win(board, WIN_LIST_3) and not o_win(board, WIN_LIST_3):
             # print('Returned!')
             return 0
     if side == 'X':
-        if x_win(board, Win_List_3):
+        if x_win(board, WIN_LIST_3):
             # print('Returned!')
             return 1
-        elif o_win(board, Win_List_3):
+        elif o_win(board, WIN_LIST_3):
             # print('Returned!')
             return -1
         test_board = Board(3)
@@ -188,10 +188,10 @@ def outcome(board, side, move):
         else:
             return 0
     if side == 'O':
-        if x_win(board, Win_List_3):
+        if x_win(board, WIN_LIST_3):
             # print('Returned!')
             return -1
-        elif o_win(board, Win_List_3):
+        elif o_win(board, WIN_LIST_3):
             # print('Returned!')
             return 1
         test_board = Board(3)

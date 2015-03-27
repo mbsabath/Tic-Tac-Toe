@@ -21,10 +21,10 @@ def play_x():
             input_o(board, cpu)
         print('Current Board:')
         print(board)
-        if o_win(board, Win_List_3):
+        if o_win(board, WIN_LIST_3):
             print('You Lost')
             break
-        elif x_win(board, Win_List_3):
+        elif x_win(board, WIN_LIST_3):
             print('You Won!')
             break
         moves += 1
@@ -89,10 +89,10 @@ def play_o():
             input_x(board, cpu)
         print('Current Board:')
         print(board)
-        if x_win(board, Win_List_3):
+        if x_win(board, WIN_LIST_3):
             print('You Lost')
             break
-        elif o_win(board, Win_List_3):
+        elif o_win(board, WIN_LIST_3):
             print('You Won!')
             break
         moves += 1
@@ -135,7 +135,7 @@ def main():
             break
 
 
-main()
+if __name__ == "__main__": main()
 
 
 
